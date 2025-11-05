@@ -1,0 +1,608 @@
+/* Estilos iniciais - quase nenhum */
+/* ==========================================================================
+   Reset Básico e Configurações Globais
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    transition: color 0.5s, background-color 0.5s, border-color 0.5s, text-shadow 0.5s, box-shadow 0.5s;
+}
+
+body {
+    background-color: #f0f0f0; /* Um fundo cinza claro para começar */
+    /* Centraliza o conteúdo em todos os estágios */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Layout Principal
+   ========================================================================== */
+#game-container {
+    margin-bottom: 30px; /* Espaço entre o botão e a loja */
+    position: relative; /* Necessário para posicionar o texto flutuante corretamente */
+}
+
+.upgrade {
+    margin-bottom: 15px; /* Espaço entre cada item da loja */
+}
+#store {
+    min-width: 400px;
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s, background-color 0.2s;
+}
+
+/* ==========================================================================
+   Botão Principal e Efeitos de Clique
+   ========================================================================== */
+#main-button {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    border: 5px solid darkred;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#main-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+/* ==========================================================================
+   Elementos da UI (Botão de Teste, Painel Lateral)
+   ========================================================================== */
+/* Estilo para o botão de teste */
+#test-button {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    border: none;
+    border-radius: 4px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    z-index: 999; /* Garante que ele fique sobre as animações de fundo */
+}
+
+#test-button:hover {
+    opacity: 1;
+}
+
+/* Estilo para o texto de pontos flutuante */
+.floating-text {
+    position: absolute;
+    pointer-events: none; /* Impede que o texto bloqueie cliques no botão */
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    animation: fade-up-out 1s forwards;
+}
+
+/* Estilo para o texto de clique crítico */
+.crit-text {
+    color: #ff4500; /* Laranja avermelhado */
+    font-size: 32px;
+    text-shadow: 0 0 8px #fff;
+}
+
+/* ==========================================================================
+   Animações Globais
+   ========================================================================== */
+/* Animação do texto flutuante */
+@keyframes fade-up-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+/* Animação para os planos de fundo com gradiente */
+@keyframes animated-gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Animação para o botão Glitch */
+@keyframes glitch-button-flicker {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-3px);
+    }
+    75% {
+        transform: translateX(3px);
+    }
+}
+
+/* Animação para as nuvens do tema Retrô */
+@keyframes move-clouds {
+    from {
+        transform: translateX(-200px);
+    }
+    to {
+        transform: translateX(100vw);
+    }
+}
+
+/* Estilo para o fundo Matrix */
+#matrix-canvas {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Fica atrás de todo o conteúdo */
+}
+
+/* ==========================================================================
+   Painel Lateral de Conquistas e Prestígio
+   ========================================================================== */
+#open-panel-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #555;
+    background-color: #fff;
+    font-size: 24px;
+    z-index: 1000;
+}
+
+#side-panel {
+    position: fixed;
+    top: 0;
+    right: -450px; /* Começa fora da tela */
+    width: 400px;
+    height: 100%;
+    background-color: #f0f0f0;
+    border-left: 2px solid #ccc;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    padding: 20px;
+    transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1001;
+    overflow-y: auto;
+}
+
+#side-panel.open {
+    right: 0;
+}
+
+#close-panel-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #888;
+}
+
+#prestige-section, #achievements-section {
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#prestige-section button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ccc;
+    border: none;
+    color: #888;
+}
+
+#achievements-list {
+    list-style: none;
+    padding: 0;
+}
+
+#achievements-list li {
+    padding: 8px;
+    margin-bottom: 5px;
+    background-color: #e9e9e9;
+    border-radius: 4px;
+    opacity: 0.6;
+}
+
+#achievements-list li.unlocked {
+    background-color: #d4edda;
+    opacity: 1;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   NÍVEIS DE DESIGN
+   ========================================================================== */
+/* --- MELHORIA DE DESIGN NÍVEL 1 --- */
+/* Tema Doce */
+.design-level-1 {
+    background: #fce4ec url('https://www.transparenttextures.com/patterns/az-subtle.png');
+    font-family: 'Roboto', sans-serif;
+}
+.design-level-1 #matrix-canvas {
+    display: block; /* Mostra o canvas para o tema doce */
+}
+.design-level-1 h1, .design-level-1 h2, .design-level-1 p {
+    color: #ad1457;
+}
+.design-level-1 #store {
+    background-color: #f8bbd0;
+    border: 2px dashed #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+.design-level-1 button {
+    background-color: #ec407a;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+}
+.design-level-1 button:hover {
+    background-color: #d81b60;
+}
+.design-level-1 #main-button {
+    background: #ff80ab;
+    border-color: #f48fb1;
+    box-shadow: 0 5px 10px rgba(173, 20, 87, 0.3);
+}
+.design-level-1 #side-panel {
+    background-color: #f8bbd0;
+    border-left-color: #ec407a;
+}
+.design-level-1 #achievements-list li {
+    background-color: #fce4ec;
+}
+.design-level-1 #achievements-list li.unlocked {
+    background-color: #ff80ab;
+    color: #fff;
+}
+
+
+/* --- MELHORIA DE DESIGN NÍVEL 2 --- */
+/* Tema Steampunk */
+.design-level-2 {
+    background: #603813 url('https://www.transparenttextures.com/patterns/worn-dots.png');
+    font-family: 'Times New Roman', Times, serif;
+}
+/* Mostra o canvas para a animação de engrenagens */
+.design-level-2 #matrix-canvas {
+    display: block;
+}
+.design-level-2 h1, .design-level-2 h2, .design-level-2 p {
+    color: #f3e5ab;
+}
+.design-level-2 #store {
+    background-color: #42260d;
+    border: 4px double #c5a059;
+}
+.design-level-2 button {
+    background-color: #c5a059;
+    color: #42260d;
+    border-radius: 0;
+}
+.design-level-2 #main-button {
+    background: radial-gradient(circle, #d4ac68 0%, #a88850 100%);
+    border: 8px solid #42260d;
+    box-shadow: inset 0 0 10px #000, 0 5px 15px #000;
+    border-radius: 50%; /* Garante que volte a ser um círculo */
+    transform: none; /* Reseta transformações de outros temas */
+}
+.design-level-2 #side-panel {
+    background: #42260d url('https://www.transparenttextures.com/patterns/worn-dots.png');
+    border-left: 4px double #c5a059;
+    color: #f3e5ab;
+}
+
+
+/* --- MELHORIA DE DESIGN NÍVEL 3 (Premium) --- */
+/* Tema Glitch */
+.design-level-3 {
+    background-color: #000;
+    font-family: 'Orbitron', sans-serif;
+}
+.design-level-3 h1, .design-level-3 h2, .design-level-3 p {
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00, 0 0 3px #ff0000;
+}
+.design-level-3 #matrix-canvas {
+    display: block; /* Mostra o canvas quando o tema está ativo */
+}
+.design-level-3 #main-button {
+    border-radius: 0; /* Botão quadrado */
+    background-color: #0F0;
+    border: 3px solid #0F0;
+    box-shadow: 0 0 20px #0F0;
+    animation: glitch-button-flicker 0.2s infinite;
+    transform: none;
+}
+.design-level-3 #side-panel {
+    background-color: #050505;
+    border-left: 2px solid #0F0;
+    color: #0F0;
+}
+
+/* --- MELHORIA DE DESIGN NÍVEL 4 (Futurista) --- */
+/* Tema Oceano */
+.design-level-4 {
+    background-color: #0072ff; /* Cor de fundo base */
+    font-family: 'Roboto', sans-serif;
+}
+.design-level-4 h1, .design-level-4 h2, .design-level-4 p {
+    color: #fff;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+}
+.design-level-4 #main-button {
+    background: radial-gradient(circle, #e0f7fa 0%, #80deea 100%);
+    border: 5px solid #fff;
+    box-shadow: 0 0 20px #fff, inset 0 0 15px #4dd0e1;
+    border-radius: 50%;
+    animation: none; /* Remove animações de outros temas */
+}
+
+/* Mostra o canvas para a animação do oceano */
+.design-level-4 #matrix-canvas {
+    display: block;
+}
+.design-level-4 #side-panel {
+    background-color: #005a9e;
+    border-left-color: #fff;
+    color: #fff;
+}
+
+/* --- MELHORIA DE DESIGN NÍVEL 5 (Minimalista) --- */
+/* Estilo HQ */
+.design-level-5 {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #e0f2f1;
+    background-image: radial-gradient(#bdbdbd 1px, transparent 1px);
+    background-size: 15px 15px;
+}
+/* Mostra o canvas para a animação de HQ */
+.design-level-5 #matrix-canvas {
+    display: block;
+}
+.design-level-5 h1, .design-level-5 h2, .design-level-5 p {
+    color: #000;
+    text-shadow: 2px 2px #fff;
+}
+.design-level-5 #store {
+    background-color: #ffd900;
+    border: 4px solid #000;
+}
+.design-level-5 button {
+    background-color: #f44336;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 0;
+    text-shadow: 1px 1px #000;
+}
+.design-level-5 button:hover {
+    background-color: #d32f2f;
+}
+.design-level-5 #main-button {
+    background: #fff;
+    border: 5px solid #000;
+    border-radius: 10px; /* Quadrado com cantos arredondados */
+    box-shadow: 8px 8px 0px #000;
+}
+.design-level-5 #side-panel {
+    background-color: #ffd900;
+    border-left: 4px solid #000;
+    color: #000;
+}
+
+/* --- MELHORIA DE DESIGN NÍVEL 6 (Retrô) --- */
+.design-level-6 {
+    font-family: 'Press Start 2P', cursive;
+    background: #5c94fc; /* Azul céu do Mario */
+    position: relative; /* Necessário para os pseudo-elementos */
+    overflow: hidden; /* Esconde o que sai da tela */
+}
+/* Esconde o canvas para os temas seguintes */
+.design-level-6 #matrix-canvas {
+    display: none !important;
+}
+/* Colinas verdes */
+.design-level-6::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background: #34a853;
+    z-index: -2;
+}
+/* Nuvens */
+.design-level-6::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 0;
+    width: 150px;
+    height: 60px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 50px -20px 0 20px white, 180px 10px 0 0 white, 350px -10px 0 15px white, 500px 5px 0 5px white;
+    animation: move-clouds 30s linear infinite;
+    z-index: -1;
+}
+.design-level-6 h1, .design-level-6 h2, .design-level-6 p {
+    color: #fff;
+    text-shadow: 2px 2px #000;
+}
+.design-level-6 #store {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid #fff;
+}
+.design-level-6 button {
+    background-color: #ffdd00;
+    color: #000;
+    border: 2px solid #000;
+}
+.design-level-6 button:hover {
+    background-color: #ffb300;
+}
+.design-level-6 #main-button {
+    background: #ff33a1;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #ff33a1;
+}
+.design-level-6 #side-panel {
+    background-color: rgba(0,0,0,0.5);
+    border-left: 2px solid #fff;
+    color: #fff;
+}
+
+/* --- MELHORIA DE DESIGN NÍVEL 7 (Natureza) --- */
+.design-level-7 {
+    font-family: 'Roboto', sans-serif;
+    background: #223d30; /* Verde floresta escuro */
+}
+/* Mostra o canvas para a animação de natureza */
+.design-level-7 #matrix-canvas {
+    display: block;
+}
+/* Remove os pseudo-elementos do tema Retrô */
+.design-level-7::before,
+.design-level-7::after {
+    content: none;
+}
+.design-level-7 h1, .design-level-7 h2, .design-level-7 p {
+    color: #f0f0f0;
+}
+.design-level-7 #store {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid #a2c164;
+}
+.design-level-7 button {
+    background-color: #8aae34;
+    color: #fff;
+}
+.design-level-7 button:hover {
+    background-color: #6a9113;
+}
+.design-level-7 #main-button {
+    background: radial-gradient(circle, #c5e1a5, #7cb342);
+    border: 8px solid #33691e;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+.design-level-7 #side-panel {
+    background-color: #2c3e50;
+    border-left-color: #fd746c;
+    color: #f0f0f0;
+}
+
+/* --- MELHORIA DE DESIGN NÍVEL 8 (Espacial) --- */
+.design-level-8 {
+    background: #000 url('https://www.transparenttextures.com/patterns/stardust.png');
+    font-family: 'Orbitron', sans-serif;
+}
+/* Esconde o canvas para os temas seguintes */
+.design-level-8 #matrix-canvas {
+    display: none !important;
+}
+.design-level-8 h1, .design-level-8 h2, .design-level-8 p {
+    color: #00d9ff;
+    text-shadow: 0 0 8px #00d9ff;
+}
+.design-level-8 #main-button {
+    background: radial-gradient(circle, #ffeb3b, #ff5722);
+    border-color: #ffc107;
+    box-shadow: 0 0 30px #ffeb3b;
+}
+.design-level-8 #side-panel {
+    background: #000 url('https://www.transparenttextures.com/patterns/stardust.png');
+    border-left: 2px solid #00d9ff;
+    color: #00d9ff;
+}
+
+/* --- MELHORIA DE DESIGN NÍVEL 9 (Ouro Imperial) --- */
+.design-level-9 {
+    background: #111 url('https://www.transparenttextures.com/patterns/dark-matter.png');
+    font-family: 'Times New Roman', Times, serif;
+}
+.design-level-9 h1, .design-level-9 h2, .design-level-9 p {
+    color: #FFD700;
+    text-shadow: 1px 1px #000;
+}
+.design-level-9 #store {
+    background-color: #222;
+    border: 2px solid #FFD700;
+}
+.design-level-9 button {
+    background-color: #111;
+    color: #FFD700;
+    border: 1px solid #FFD700;
+}
+.design-level-9 button:hover {
+    background-color: #FFD700;
+    color: #111;
+}
+.design-level-9 #main-button {
+    background: #FFD700;
+    border-color: #b89b00;
+}
+.design-level-9 #side-panel {
+    background-color: #111;
+    border-left: 2px solid #FFD700;
+    color: #FFD700;
+}
+
+/* --- MELHORIA DE DESIGN NÍVEL 10 (Divino) --- */
+.design-level-10 {
+    background: linear-gradient(270deg, #5c0099, #a300cc, #00d4ff, #ff00c8);
+    background-size: 400% 400%;
+    animation: animated-gradient 20s ease infinite;
+    font-family: 'Orbitron', sans-serif;
+}
+.design-level-10 h1, .design-level-10 h2, .design-level-10 p {
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #ff00c8, 0 0 82px #ff00c8;
+}
+.design-level-10 #main-button {
+    background: radial-gradient(circle, #ffffff 20%, #ff00c8 50%, #5c0099 100%);
+    border: 2px solid #fff;
+    box-shadow: 0 0 50px #ff00c8;
+}
+.design-level-10 #store {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 2px solid #ff00c8;
+    box-shadow: 0 0 15px #ff00c8;
+}
+.design-level-10 #side-panel {
+    background: rgba(0,0,0,0.3);
+    border-left: 2px solid #ff00c8;
+    color: #fff;
+}

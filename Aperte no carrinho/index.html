@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Clicker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Press+Start+2P&family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Button Clicker</h1>
+        <p>Pontos: <span id="score">0</span> (<span id="pps-display">0</span> por segundo)</p>
+        <button id="main-button"></button>
+        <button id="test-button">+1M Pontos (Teste)</button>
+    </div>
+
+    <div id="store">
+        <h2>Melhorias</h2>
+        <div class="upgrade">
+            <button id="upgrade-click">Melhorar Clique (Custo: <span id="upgrade-click-cost">10</span>)</button>
+            <p>Aumenta os pontos por click. Atualmente: <span id="points-per-click">1</span></p>
+        </div>
+        <div class="upgrade">
+            <button id="upgrade-passive">Contratar Ajudante (Custo: <span id="passive-cost">50</span>)</button>
+            <p>Gera pontos automaticamente. (+1 por segundo)</p>
+        </div>
+        <div class="upgrade">
+            <button id="upgrade-crit">Melhorar Clique Crítico (Custo: <span id="crit-cost">250</span>)</button>
+            <p>Chance de <span id="crit-chance-display">0</span>% de ganhar 10x mais pontos por clique.</p>
+        </div>
+        <div class="upgrade">
+            <button id="upgrade-discount">Negociar Descontos (Custo: <span id="discount-cost">1000</span>)</button>
+            <p>Reduz o custo de todas as melhorias em 10%.</p>
+        </div>
+        <div class="upgrade" id="design-upgrade-wrapper">
+            <button id="upgrade-design">
+                Comprar <span id="upgrade-design-name">Layout Básico</span> (Custo: <span id="upgrade-design-cost">25</span>)
+            </button>
+            <p id="upgrade-design-description">Melhora a fonte e a organização.</p>
+        </div>
+    </div>
+
+    <button id="open-panel-btn">🏆</button>
+
+    <div id="side-panel">
+        <button id="close-panel-btn">&times;</button>
+        <h2>Conquistas & Prestígio</h2>
+
+        <div id="prestige-section">
+            <h3>Prestígio</h3>
+            <p>Alcance 10 Milhões de pontos para prestigiar. Você reiniciará seu progresso, mas ganhará um bônus permanente em todos os seus ganhos!</p>
+            <button id="prestige-btn" disabled>Prestigiar (Requer 10M)</button>
+        </div>
+
+        <div id="achievements-section">
+            <h3>Conquistas</h3>
+            <ul id="achievements-list"></ul>
+        </div>
+    </div>
+
+    <canvas id="matrix-canvas"></canvas>
+
+</body>
+</html>
